@@ -41,6 +41,10 @@ const SalesPage: React.FC = () => {
     setShowForm(false);
   };
 
+  const handleExcelDownload = () => {
+    alert('엑셀 다운로드 기능은 Mock으로 구현되었습니다.');
+  };
+
   const selectedMonthStr = `${selectedYear}-${String(selectedMonth).padStart(2, '0')}`;
   const filteredSales = sales.filter((sale) =>
     sale.sale_date.startsWith(selectedMonthStr)
@@ -50,7 +54,10 @@ const SalesPage: React.FC = () => {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <h1>매출 관리</h1>
-        <div style={{ width: '110px' }}>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <Button variant="secondary" onClick={handleExcelDownload}>
+            엑셀 다운로드
+          </Button>
           <Button onClick={() => setShowForm(!showForm)}>
             {showForm ? '취소' : '매출 등록'}
           </Button>

@@ -33,6 +33,10 @@ const ReceivablesPage: React.FC = () => {
     alert(`미수금 ${recvId}번의 수금이 취소되었습니다 (Mock)`);
   };
 
+  const handleExcelDownload = () => {
+    alert('엑셀 다운로드 기능은 Mock으로 구현되었습니다.');
+  };
+
   const selectedMonthStr = `${selectedYear}-${String(selectedMonth).padStart(2, '0')}`;
   const filteredReceivables = receivables.filter((receivable) =>
     receivable.due_date.startsWith(selectedMonthStr)
@@ -44,7 +48,12 @@ const ReceivablesPage: React.FC = () => {
 
   return (
     <div>
-      <h1>미수금 관리</h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+        <h1>미수금 관리</h1>
+        <Button variant="secondary" onClick={handleExcelDownload}>
+          엑셀 다운로드
+        </Button>
+      </div>
 
       <Card>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

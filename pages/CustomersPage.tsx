@@ -116,9 +116,18 @@ const CustomersPage: React.FC = () => {
     });
   };
 
+  const handleExcelDownload = () => {
+    alert('엑셀 다운로드 기능은 Mock으로 구현되었습니다.');
+  };
+
   return (
     <div>
-      <h1 style={{ marginBottom: '16px' }}>고객 관리</h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+        <h1>고객 관리</h1>
+        <Button variant="secondary" onClick={handleExcelDownload}>
+          엑셀 다운로드
+        </Button>
+      </div>
 
       {editingCustomer && (
         <Card style={{ marginBottom: '16px' }}>

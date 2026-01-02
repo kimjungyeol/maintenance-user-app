@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Card from '../src/components/Card';
+import Button from '../src/components/Button';
 import MonthFilter from '../src/components/MonthFilter';
 import { fetchEmployees, fetchPayrolls } from '../src/mock/api';
 import { Employee, Payroll } from '../src/types';
@@ -32,6 +33,10 @@ const PayrollPage: React.FC = () => {
     return employee?.emp_name || '알 수 없음';
   };
 
+  const handleExcelDownload = () => {
+    alert('엑셀 다운로드 기능은 Mock으로 구현되었습니다.');
+  };
+
   const selectedMonthStr = `${selectedYear}-${String(selectedMonth).padStart(2, '0')}`;
   const filteredPayrolls = payrolls.filter((payroll) =>
     payroll.pay_month === selectedMonthStr
@@ -39,7 +44,12 @@ const PayrollPage: React.FC = () => {
 
   return (
     <div>
-      <h1>급여 관리</h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+        <h1>급여 관리</h1>
+        <Button variant="secondary" onClick={handleExcelDownload}>
+          엑셀 다운로드
+        </Button>
+      </div>
 
       <h2>직원 목록</h2>
       {employees.map((employee) => (

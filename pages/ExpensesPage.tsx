@@ -51,6 +51,10 @@ const ExpensesPage: React.FC = () => {
     setShowForm(false);
   };
 
+  const handleExcelDownload = () => {
+    alert('엑셀 다운로드 기능은 Mock으로 구현되었습니다.');
+  };
+
   const selectedMonthStr = `${selectedYear}-${String(selectedMonth).padStart(2, '0')}`;
   const filteredExpenses = expenses.filter((expense) =>
     expense.expense_date.startsWith(selectedMonthStr)
@@ -60,7 +64,10 @@ const ExpensesPage: React.FC = () => {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <h1>지출 관리</h1>
-        <div style={{ width: '110px' }}>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <Button variant="secondary" onClick={handleExcelDownload}>
+            엑셀 다운로드
+          </Button>
           <Button onClick={() => setShowForm(!showForm)}>
             {showForm ? '취소' : '지출 등록'}
           </Button>
