@@ -12,7 +12,7 @@
   - 헤더(Header)
   - 모바일 네비게이션 메뉴(Mobile Navigation)
 
-## 데스크톱 환경 (768px 이상)
+## 데스크톱 환경 (1024px 이상)
 
 ### 헤더 레이아웃
 ```
@@ -34,7 +34,7 @@
   - 메뉴 항목 간격: 8px
   - 클래스: `.desktop-only`
 
-## 모바일 환경 (768px 미만)
+## 모바일/태블릿 환경 (1024px 미만)
 
 ### 헤더 레이아웃 (메뉴 닫힘)
 ```
@@ -81,11 +81,11 @@
 
 ### .mobile-only
 - 기본: `display: block`
-- 768px 이상: `display: none`
+- 1024px 이상: `display: none`
 
 ### .desktop-only
 - 기본: `display: none`
-- 768px 이상: `display: block`
+- 1024px 이상: `display: block`
 
 ## 메뉴 항목 구성
 
@@ -111,7 +111,7 @@
 ## 주요 특징
 
 ### 1. 콘텐츠 밀림 방지
-- 모바일 메뉴가 `position: absolute`로 설정되어 있어 메뉴가 열릴 때 페이지 콘텐츠가 밀려나지 않음
+- 모바일/태블릿 메뉴가 `position: absolute`로 설정되어 있어 메뉴가 열릴 때 페이지 콘텐츠가 밀려나지 않음
 - 메뉴는 콘텐츠 위에 오버레이됨
 
 ### 2. Sticky 헤더
@@ -119,15 +119,19 @@
 - `z-index: 100`으로 다른 요소 위에 표시
 
 ### 3. 상태 관리
-- `isMenuOpen` state로 모바일 메뉴 토글 상태 관리
+- `isMenuOpen` state로 모바일/태블릿 메뉴 토글 상태 관리
 - 메뉴 항목 클릭 시 자동으로 메뉴 닫힘
+
+### 4. 반응형 브레이크포인트
+- **1024px 미만**: 모바일/태블릿 환경 (햄버거 메뉴)
+- **1024px 이상**: 데스크톱 환경 (가로 메뉴)
 
 ## 파일 위치
 - 메인 컴포넌트: `src/App.tsx`
 - 스타일: `src/index.css`
 
 ## 수정 시 주의사항
-1. 모바일 메뉴의 `position: absolute` 속성을 유지해야 콘텐츠 밀림이 발생하지 않음
-2. 반응형 클래스(`.mobile-only`, `.desktop-only`)는 768px 기준으로 동작
+1. 모바일/태블릿 메뉴의 `position: absolute` 속성을 유지해야 콘텐츠 밀림이 발생하지 않음
+2. 반응형 클래스(`.mobile-only`, `.desktop-only`)는 **1024px** 기준으로 동작
 3. 타이틀과 햄버거 버튼은 `position: absolute`로 좌우에 고정
 4. 데스크톱 메뉴는 `justifyContent: center`로 중앙 정렬

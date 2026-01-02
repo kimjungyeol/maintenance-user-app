@@ -65,7 +65,7 @@ const Dashboard: React.FC = () => {
             borderTop: '1px solid #eee',
             paddingTop: '12px',
           }}>
-            <span>순현금:</span>
+            <span>순수익:</span>
             <strong style={{
               color: summary.todayNetCash >= 0 ? 'var(--primary-color)' : 'red',
               fontSize: '18px',
