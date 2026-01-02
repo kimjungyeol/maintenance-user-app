@@ -6,6 +6,7 @@ import {
   Employee,
   Payroll,
   DashboardSummary,
+  MonthlyTrends,
 } from '../types';
 
 const mockSales: Sale[] = [
@@ -181,6 +182,76 @@ export const fetchDashboardSummary = async (): Promise<ApiResponse<DashboardSumm
           todayNetCash: todaySales - todayExpenses,
         },
       });
+    }, 300);
+  });
+};
+
+// 2025년 월별 테스트 데이터 생성
+const generate2025MonthlyData = (): MonthlyTrends => {
+  return {
+    year: 2025,
+    sales: [
+      { month: 1, value: 15000000 },
+      { month: 2, value: 18000000 },
+      { month: 3, value: 22000000 },
+      { month: 4, value: 19000000 },
+      { month: 5, value: 24000000 },
+      { month: 6, value: 21000000 },
+      { month: 7, value: 26000000 },
+      { month: 8, value: 23000000 },
+      { month: 9, value: 25000000 },
+      { month: 10, value: 28000000 },
+      { month: 11, value: 30000000 },
+      { month: 12, value: 32000000 },
+    ],
+    expenses: [
+      { month: 1, value: 8000000 },
+      { month: 2, value: 9500000 },
+      { month: 3, value: 11000000 },
+      { month: 4, value: 10000000 },
+      { month: 5, value: 12000000 },
+      { month: 6, value: 11500000 },
+      { month: 7, value: 13000000 },
+      { month: 8, value: 12500000 },
+      { month: 9, value: 13500000 },
+      { month: 10, value: 14000000 },
+      { month: 11, value: 15000000 },
+      { month: 12, value: 16000000 },
+    ],
+    receivables: [
+      { month: 1, value: 2000000 },
+      { month: 2, value: 2500000 },
+      { month: 3, value: 3000000 },
+      { month: 4, value: 2800000 },
+      { month: 5, value: 3500000 },
+      { month: 6, value: 3200000 },
+      { month: 7, value: 4000000 },
+      { month: 8, value: 3800000 },
+      { month: 9, value: 4200000 },
+      { month: 10, value: 4500000 },
+      { month: 11, value: 5000000 },
+      { month: 12, value: 5500000 },
+    ],
+  };
+};
+
+export const fetchMonthlyTrends = async (year: number): Promise<ApiResponse<MonthlyTrends>> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      if (year === 2025) {
+        resolve({ success: true, data: generate2025MonthlyData() });
+      } else {
+        // 다른 연도는 기본 데이터 반환
+        resolve({
+          success: true,
+          data: {
+            year,
+            sales: Array.from({ length: 12 }, (_, i) => ({ month: i + 1, value: 0 })),
+            expenses: Array.from({ length: 12 }, (_, i) => ({ month: i + 1, value: 0 })),
+            receivables: Array.from({ length: 12 }, (_, i) => ({ month: i + 1, value: 0 })),
+          },
+        });
+      }
     }, 300);
   });
 };

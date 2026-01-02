@@ -41,7 +41,7 @@ const SettingsPage: React.FC = () => {
           value={businessInfo.address}
           onChange={(e) => setBusinessInfo({ ...businessInfo, address: e.target.value })}
         />
-        <Button onClick={handleSave}>저장</Button>
+        <Button onClick={handleSave} fullWidth>저장</Button>
       </Card>
 
       <Card>

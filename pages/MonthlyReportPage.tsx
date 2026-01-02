@@ -56,6 +56,7 @@ const MonthlyReportPage: React.FC = () => {
           style={{
             width: '100%',
             padding: '12px',
+            paddingRight: '32px',
             borderRadius: 'var(--card-radius)',
             border: '1px solid #ddd',
             fontSize: 'var(--font-base)',
@@ -102,7 +103,7 @@ const MonthlyReportPage: React.FC = () => {
 
       <Card>
         <h2>리포트 다운로드</h2>
-        <Button onClick={handleDownload}>엑셀 다운로드</Button>
+        <Button onClick={handleDownload} fullWidth>엑셀 다운로드</Button>
       </Card>
     </div>
   );

@@ -55,3 +55,15 @@ export interface DashboardSummary {
   todayExpenses: number;
   todayNetCash: number;
 }
+
+export interface MonthlyData {
+  month: number;
+  value: number;
+}
+
+export interface MonthlyTrends {
+  year: number;
+  sales: MonthlyData[];
+  expenses: MonthlyData[];
+  receivables: MonthlyData[];
+}

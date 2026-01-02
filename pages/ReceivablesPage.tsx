@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import Card from '../src/components/Card';
 import Button from '../src/components/Button';
+import MonthFilter from '../src/components/MonthFilter';
 import { fetchReceivables } from '../src/mock/api';
 import { Receivable } from '../src/types';
 
 const ReceivablesPage: React.FC = () => {
   const [receivables, setReceivables] = useState<Receivable[]>([]);
+  const currentDate = new Date();
+  const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth() + 1);
 
   useEffect(() => {
     const loadData = async () => {
@@ -25,7 +29,16 @@ const ReceivablesPage: React.FC = () => {
     alert(`미수금 ${recvId}번이 수금 처리되었습니다 (Mock)`);
   };
 
-  const unpaidTotal = receivables
+  const handleCancel = (recvId: number) => {
+    alert(`미수금 ${recvId}번의 수금이 취소되었습니다 (Mock)`);
+  };
+
+  const selectedMonthStr = `${selectedYear}-${String(selectedMonth).padStart(2, '0')}`;
+  const filteredReceivables = receivables.filter((receivable) =>
+    receivable.due_date.startsWith(selectedMonthStr)
+  );
+
+  const unpaidTotal = filteredReceivables
     .filter((r) => !r.paid)
     .reduce((sum, r) => sum + r.amount, 0);
 
@@ -42,47 +55,78 @@ const ReceivablesPage: React.FC = () => {
         </div>
       </Card>
 
+      <MonthFilter
+        selectedYear={selectedYear}
+        selectedMonth={selectedMonth}
+        onYearChange={setSelectedYear}
+        onMonthChange={setSelectedMonth}
+      />
+
       <h2>미수금 목록</h2>
-      {receivables.map((receivable) => (
+      {filteredReceivables.map((receivable) => (
         <Card key={receivable.recv_id}>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            marginBottom: '8px',
+            alignItems: 'center',
+            marginBottom: '12px',
+            paddingBottom: '12px',
+            borderBottom: receivable.paid ? '2px solid #10b981' : '2px solid #ef4444',
           }}>
             <div>
-              <div style={{ fontWeight: 500, marginBottom: '4px' }}>
+              <div style={{ fontSize: '16px', fontWeight: 600, color: '#333', marginBottom: '4px' }}>
                 {receivable.customer_name}
-              </div>
-              <div style={{ fontSize: '13px', color: '#666' }}>
-                수금 예정일: {receivable.due_date}
-              </div>
-            </div>
-            <div style={{ textAlign: 'right' }}>
-              <div style={{ color: 'red', fontWeight: 'bold', marginBottom: '8px' }}>
-                {formatCurrency(receivable.amount)}
               </div>
               {receivable.paid ? (
                 <span style={{
-                  backgroundColor: 'var(--primary-color)',
+                  backgroundColor: '#10b981',
                   color: '#fff',
                   padding: '4px 12px',
                   borderRadius: '4px',
-                  fontSize: '13px',
+                  fontSize: '12px',
+                  fontWeight: 500,
                 }}>
                   수금완료
                 </span>
               ) : (
-                <Button onClick={() => handleCollect(receivable.recv_id)}>
-                  수금처리
-                </Button>
+                <span style={{
+                  backgroundColor: '#fef2f2',
+                  color: '#ef4444',
+                  padding: '4px 12px',
+                  borderRadius: '4px',
+                  fontSize: '12px',
+                  fontWeight: 500,
+                }}>
+                  미수금
+                </span>
               )}
             </div>
+            <div style={{ color: receivable.paid ? '#10b981' : '#ef4444', fontWeight: 'bold', fontSize: '18px' }}>
+              {formatCurrency(receivable.amount)}
+            </div>
           </div>
-          {receivable.paid && receivable.paid_date && (
-            <div style={{ fontSize: '13px', color: '#666', marginTop: '8px' }}>
-              수금일: {receivable.paid_date}
+          <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr', gap: '8px', fontSize: '14px', marginBottom: receivable.paid ? '12px' : '0' }}>
+            <span style={{ color: '#666', fontWeight: 500 }}>수금 예정일</span>
+            <span style={{ color: '#222', fontWeight: 600 }}>{receivable.due_date}</span>
+
+            {receivable.paid && receivable.paid_date && (
+              <>
+                <span style={{ color: '#666', fontWeight: 500 }}>수금일</span>
+                <span style={{ color: '#222', fontWeight: 600 }}>{receivable.paid_date}</span>
+              </>
+            )}
+          </div>
+          {!receivable.paid ? (
+            <div style={{ marginTop: '12px', width: '104px' }}>
+              <Button onClick={() => handleCollect(receivable.recv_id)} fullWidth>
+                수금처리
+              </Button>
+            </div>
+          ) : (
+            <div style={{ marginTop: '12px', width: '104px' }}>
+              <Button variant="secondary" onClick={() => handleCancel(receivable.recv_id)} fullWidth>
+                취소
+              </Button>
             </div>
           )}
         </Card>

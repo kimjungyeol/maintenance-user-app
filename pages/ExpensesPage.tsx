@@ -2,12 +2,16 @@ import React, { useEffect, useState } from 'react';
 import Card from '../src/components/Card';
 import Button from '../src/components/Button';
 import Input from '../src/components/Input';
+import MonthFilter from '../src/components/MonthFilter';
 import { fetchExpenses } from '../src/mock/api';
 import { Expense } from '../src/types';
 
 const ExpensesPage: React.FC = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [showForm, setShowForm] = useState(false);
+  const currentDate = new Date();
+  const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth() + 1);
   const [formData, setFormData] = useState({
     expense_date: new Date().toISOString().split('T')[0],
     category: 'PART' as const,
@@ -47,13 +51,20 @@ const ExpensesPage: React.FC = () => {
     setShowForm(false);
   };
 
+  const selectedMonthStr = `${selectedYear}-${String(selectedMonth).padStart(2, '0')}`;
+  const filteredExpenses = expenses.filter((expense) =>
+    expense.expense_date.startsWith(selectedMonthStr)
+  );
+
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <h1>지출 관리</h1>
-        <Button onClick={() => setShowForm(!showForm)}>
-          {showForm ? '취소' : '지출 등록'}
-        </Button>
+        <div style={{ width: '110px' }}>
+          <Button onClick={() => setShowForm(!showForm)}>
+            {showForm ? '취소' : '지출 등록'}
+          </Button>
+        </div>
       </div>
 
       {showForm && (
@@ -77,6 +88,7 @@ const ExpensesPage: React.FC = () => {
                 style={{
                   width: '100%',
                   padding: '12px',
+                  paddingRight: '32px',
                   borderRadius: 'var(--card-radius)',
                   border: '1px solid #ddd',
                   fontSize: 'var(--font-base)',
@@ -114,6 +126,7 @@ const ExpensesPage: React.FC = () => {
                 style={{
                   width: '100%',
                   padding: '12px',
+                  paddingRight: '32px',
                   borderRadius: 'var(--card-radius)',
                   border: '1px solid #ddd',
                   fontSize: 'var(--font-base)',
@@ -131,25 +144,45 @@ const ExpensesPage: React.FC = () => {
               onChange={(e) => setFormData({ ...formData, memo: e.target.value })}
               placeholder="엔진오일 구매"
             />
-            <Button type="submit">등록</Button>
+            <Button type="submit" fullWidth>등록</Button>
           </form>
         </Card>
       )}
 
+      <MonthFilter
+        selectedYear={selectedYear}
+        selectedMonth={selectedMonth}
+        onYearChange={setSelectedYear}
+        onMonthChange={setSelectedMonth}
+      />
+
       <h2>지출 목록</h2>
-      {expenses.map((expense) => (
+      {filteredExpenses.map((expense) => (
         <Card key={expense.expense_id}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-            <span style={{ fontWeight: 500 }}>{expense.expense_date}</span>
-            <span style={{ color: 'red', fontWeight: 'bold' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', paddingBottom: '12px', borderBottom: '2px solid #ef4444' }}>
+            <span style={{ fontSize: '15px', fontWeight: 600, color: '#333' }}>{expense.expense_date}</span>
+            <span style={{ color: '#ef4444', fontWeight: 'bold', fontSize: '18px' }}>
               -{formatCurrency(expense.amount)}
             </span>
           </div>
-          <div style={{ fontSize: '13px', color: '#666' }}>
-            <div>분류: {getCategoryLabel(expense.category)}</div>
-            <div>거래처: {expense.vendor_name}</div>
-            <div>결제: {expense.payment_type === 'CASH' ? '현금' : expense.payment_type === 'CARD' ? '카드' : '계좌이체'}</div>
-            {expense.memo && <div>메모: {expense.memo}</div>}
+          <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr', gap: '8px', fontSize: '14px' }}>
+            <span style={{ color: '#666', fontWeight: 500 }}>분류</span>
+            <span style={{ color: '#222', fontWeight: 600 }}>{getCategoryLabel(expense.category)}</span>
+
+            <span style={{ color: '#666', fontWeight: 500 }}>거래처</span>
+            <span style={{ color: '#222', fontWeight: 600 }}>{expense.vendor_name}</span>
+
+            <span style={{ color: '#666', fontWeight: 500 }}>결제수단</span>
+            <span style={{ color: '#222', fontWeight: 600 }}>
+              {expense.payment_type === 'CASH' ? '현금' : expense.payment_type === 'CARD' ? '카드' : '계좌이체'}
+            </span>
+
+            {expense.memo && (
+              <>
+                <span style={{ color: '#666', fontWeight: 500 }}>메모</span>
+                <span style={{ color: '#222' }}>{expense.memo}</span>
+              </>
+            )}
           </div>
         </Card>
       ))}

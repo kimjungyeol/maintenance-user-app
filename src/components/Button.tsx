@@ -6,6 +6,7 @@ interface ButtonProps {
   variant?: 'primary' | 'secondary';
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
+  fullWidth?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -14,11 +15,13 @@ const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
   type = 'button',
   disabled = false,
+  fullWidth = false,
 }) => {
   const styles: React.CSSProperties = {
     backgroundColor: variant === 'primary' ? 'var(--primary-color)' : 'var(--secondary-color)',
     color: '#fff',
     opacity: disabled ? 0.5 : 1,
+    width: fullWidth ? '100%' : 'auto',
   };
 
   return (
