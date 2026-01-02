@@ -7,6 +7,7 @@ import {
   Payroll,
   DashboardSummary,
   MonthlyTrends,
+  Customer,
 } from '../types';
 
 const mockSales: Sale[] = [
@@ -123,6 +124,49 @@ const mockPayrolls: Payroll[] = [
   },
 ];
 
+const mockCustomers: Customer[] = [
+  {
+    customer_id: 1,
+    customer_name: '김철수',
+    car_number: '12가3456',
+    phone: '010-1234-5678',
+    email: 'kim@example.com',
+    memo: '단골 고객',
+    created_at: '2025-01-15',
+  },
+  {
+    customer_id: 2,
+    customer_name: '이영희',
+    car_number: '78나9012',
+    phone: '010-2345-6789',
+    email: 'lee@example.com',
+    created_at: '2025-02-20',
+  },
+  {
+    customer_id: 3,
+    customer_name: '박민수',
+    car_number: '34다5678',
+    phone: '010-3456-7890',
+    memo: '정기점검 고객',
+    created_at: '2025-03-10',
+  },
+  {
+    customer_id: 4,
+    customer_name: '정대리',
+    car_number: '56라7890',
+    phone: '010-4567-8901',
+    email: 'jung@example.com',
+    created_at: '2025-04-05',
+  },
+  {
+    customer_id: 5,
+    customer_name: '강사장',
+    car_number: '90마1234',
+    phone: '010-5678-9012',
+    created_at: '2025-05-18',
+  },
+];
+
 export const fetchSales = async (): Promise<ApiResponse<Sale[]>> => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -232,6 +276,20 @@ const generate2025MonthlyData = (): MonthlyTrends => {
       { month: 11, value: 5000000 },
       { month: 12, value: 5500000 },
     ],
+    customers: [
+      { month: 1, value: 45 },
+      { month: 2, value: 48 },
+      { month: 3, value: 52 },
+      { month: 4, value: 55 },
+      { month: 5, value: 60 },
+      { month: 6, value: 63 },
+      { month: 7, value: 68 },
+      { month: 8, value: 71 },
+      { month: 9, value: 75 },
+      { month: 10, value: 80 },
+      { month: 11, value: 85 },
+      { month: 12, value: 90 },
+    ],
   };
 };
 
@@ -249,9 +307,18 @@ export const fetchMonthlyTrends = async (year: number): Promise<ApiResponse<Mont
             sales: Array.from({ length: 12 }, (_, i) => ({ month: i + 1, value: 0 })),
             expenses: Array.from({ length: 12 }, (_, i) => ({ month: i + 1, value: 0 })),
             receivables: Array.from({ length: 12 }, (_, i) => ({ month: i + 1, value: 0 })),
+            customers: Array.from({ length: 12 }, (_, i) => ({ month: i + 1, value: 0 })),
           },
         });
       }
+    }, 300);
+  });
+};
+
+export const fetchCustomers = async (): Promise<ApiResponse<Customer[]>> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ success: true, data: mockCustomers });
     }, 300);
   });
 };

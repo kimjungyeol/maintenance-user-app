@@ -66,4 +66,15 @@ export interface MonthlyTrends {
   sales: MonthlyData[];
   expenses: MonthlyData[];
   receivables: MonthlyData[];
+  customers?: MonthlyData[];
+}
+
+export interface Customer {
+  customer_id: number;
+  customer_name: string;
+  car_number: string;
+  phone: string;
+  email?: string;
+  memo?: string;
+  created_at: string;
 }

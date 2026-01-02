@@ -5,10 +5,10 @@ import Button from '../src/components/Button';
 
 const SettingsPage: React.FC = () => {
   const [businessInfo, setBusinessInfo] = useState({
-    name: '자동차 정비소',
+    name: 'Bro Motors',
     owner: '홍길동',
     phone: '010-1234-5678',
-    address: '서울시 강남구',
+    address: '경기도 평택시',
   });
 
   const handleSave = () => {

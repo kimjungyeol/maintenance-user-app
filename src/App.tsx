@@ -5,6 +5,7 @@ import SalesPage from '../pages/SalesPage'
 import ExpensesPage from '../pages/ExpensesPage'
 import PayrollPage from '../pages/PayrollPage'
 import ReceivablesPage from '../pages/ReceivablesPage'
+import CustomersPage from '../pages/CustomersPage'
 import MonthlyReportPage from '../pages/MonthlyReportPage'
 import SettingsPage from '../pages/SettingsPage'
 
@@ -105,7 +106,7 @@ function AppContent() {
             fontWeight: 'bold',
             color: 'var(--primary-color)',
           }}>
-            정비관리
+            Bro Motors
           </div>
 
           {/* Center: Desktop navigation menu */}
@@ -123,6 +124,7 @@ function AppContent() {
               <NavItem to="/expenses">지출 관리</NavItem>
               <NavItem to="/receivables">미수금 관리</NavItem>
               <NavItem to="/payroll">급여 관리</NavItem>
+              <NavItem to="/customers">고객 관리</NavItem>
               <NavItem to="/monthly-report">월별 정산</NavItem>
               <NavItem to="/settings">기초 설정</NavItem>
             </ul>
@@ -163,6 +165,7 @@ function AppContent() {
             <NavItem to="/expenses" onClick={closeMenu} isMobile>지출 관리</NavItem>
             <NavItem to="/receivables" onClick={closeMenu} isMobile>미수금 관리</NavItem>
             <NavItem to="/payroll" onClick={closeMenu} isMobile>급여 관리</NavItem>
+            <NavItem to="/customers" onClick={closeMenu} isMobile>고객 관리</NavItem>
             <NavItem to="/monthly-report" onClick={closeMenu} isMobile>월별 정산</NavItem>
             <NavItem to="/settings" onClick={closeMenu} isMobile>기초 설정</NavItem>
           </ul>
@@ -183,6 +186,7 @@ function AppContent() {
           <Route path="/expenses" element={<ExpensesPage />} />
           <Route path="/payroll" element={<PayrollPage />} />
           <Route path="/receivables" element={<ReceivablesPage />} />
+          <Route path="/customers" element={<CustomersPage />} />
           <Route path="/monthly-report" element={<MonthlyReportPage />} />
           <Route path="/settings" element={<SettingsPage />} />
         </Routes>

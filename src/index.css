@@ -95,4 +95,15 @@ input:focus {
   .desktop-only {
     display: block;
   }
+
+  .charts-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+  }
+
+  .chart-container {
+    width: 100%;
+    margin: 0 auto;
+  }
 }

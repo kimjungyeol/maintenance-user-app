@@ -113,35 +113,53 @@ const Dashboard: React.FC = () => {
               <option value={2026}>2026년</option>
             </select>
           </div>
-          <div style={{
+          <div className="charts-grid" style={{
             display: 'flex',
             flexDirection: 'column',
             gap: '16px',
           }}>
-            <Card>
-              <LineChart
-                data={monthlyTrends.sales}
-                title="매출 관리"
-                color="var(--primary-color)"
-                year={monthlyTrends.year}
-              />
+            <Card style={{ width: '100%' }}>
+              <div className="chart-container">
+                <LineChart
+                  data={monthlyTrends.sales}
+                  title="매출 관리"
+                  color="var(--primary-color)"
+                  year={monthlyTrends.year}
+                />
+              </div>
             </Card>
-            <Card>
-              <LineChart
-                data={monthlyTrends.expenses}
-                title="지출 관리"
-                color="#ef4444"
-                year={monthlyTrends.year}
-              />
+            <Card style={{ width: '100%' }}>
+              <div className="chart-container">
+                <LineChart
+                  data={monthlyTrends.expenses}
+                  title="지출 관리"
+                  color="#ef4444"
+                  year={monthlyTrends.year}
+                />
+              </div>
             </Card>
-            <Card>
-              <LineChart
-                data={monthlyTrends.receivables}
-                title="미수금 관리"
-                color="#f59e0b"
-                year={monthlyTrends.year}
-              />
+            <Card style={{ width: '100%' }}>
+              <div className="chart-container">
+                <LineChart
+                  data={monthlyTrends.receivables}
+                  title="미수금 관리"
+                  color="#f59e0b"
+                  year={monthlyTrends.year}
+                />
+              </div>
             </Card>
+            {monthlyTrends.customers && (
+              <Card style={{ width: '100%' }}>
+                <div className="chart-container">
+                  <LineChart
+                    data={monthlyTrends.customers}
+                    title="고객 증가 추이"
+                    color="#10b981"
+                    year={monthlyTrends.year}
+                  />
+                </div>
+              </Card>
+            )}
           </div>
         </div>
       )}

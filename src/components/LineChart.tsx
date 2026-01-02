@@ -26,8 +26,12 @@ const LineChart: React.FC<LineChartProps> = ({ data, title, color, year }) => {
   const minValue = Math.min(...values, 0);
   const valueRange = maxValue - minValue || 1;
 
-  // Format currency
-  const formatCurrency = (amount: number) => {
+  // Format value (currency or count)
+  const isCustomerChart = title.includes('고객');
+  const formatValue = (amount: number) => {
+    if (isCustomerChart) {
+      return amount.toFixed(0) + '명';
+    }
     if (amount >= 100000000) {
       return (amount / 100000000).toFixed(1) + '억';
     } else if (amount >= 10000) {
@@ -98,7 +102,7 @@ const LineChart: React.FC<LineChartProps> = ({ data, title, color, year }) => {
                   fontSize="12"
                   fill="#666"
                 >
-                  {formatCurrency(value)}
+                  {formatValue(value)}
                 </text>
               </g>
             );
