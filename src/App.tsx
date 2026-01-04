@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom'
-import Dashboard from '../pages/Dashboard'
-import SalesPage from '../pages/SalesPage'
-import ExpensesPage from '../pages/ExpensesPage'
-import PayrollPage from '../pages/PayrollPage'
-import ReceivablesPage from '../pages/ReceivablesPage'
-import CustomersPage from '../pages/CustomersPage'
-import MonthlyReportPage from '../pages/MonthlyReportPage'
-import SettingsPage from '../pages/SettingsPage'
+import MaintenanceHistory from '../pages/MaintenanceHistory'
+import AdminScheduleCalendar from '../pages/AdminScheduleCalendar'
+import AdminDaySchedule from '../pages/AdminDaySchedule'
+import UserBookingCalendar from '../pages/UserBookingCalendar'
+import UserBookingTime from '../pages/UserBookingTime'
 
 const NavItem: React.FC<{ to: string; children: React.ReactNode; onClick?: () => void; isMobile?: boolean }> = ({ to, children, onClick, isMobile = false }) => {
   const location = useLocation()
@@ -120,13 +117,9 @@ function AppContent() {
               alignItems: 'center',
             }}>
               <NavItem to="/">홈</NavItem>
-              <NavItem to="/sales">매출 관리</NavItem>
-              <NavItem to="/expenses">지출 관리</NavItem>
-              <NavItem to="/receivables">미수금 관리</NavItem>
-              <NavItem to="/payroll">급여 관리</NavItem>
-              <NavItem to="/customers">고객 관리</NavItem>
-              <NavItem to="/monthly-report">월별 정산</NavItem>
-              <NavItem to="/settings">기초 설정</NavItem>
+              <NavItem to="/history">정비 이력</NavItem>
+              <NavItem to="/booking">예약 달력</NavItem>
+              <NavItem to="/schedule">스케줄 관리</NavItem>
             </ul>
           </nav>
 
@@ -161,13 +154,9 @@ function AppContent() {
             margin: 0,
           }}>
             <NavItem to="/" onClick={closeMenu} isMobile>홈</NavItem>
-            <NavItem to="/sales" onClick={closeMenu} isMobile>매출 관리</NavItem>
-            <NavItem to="/expenses" onClick={closeMenu} isMobile>지출 관리</NavItem>
-            <NavItem to="/receivables" onClick={closeMenu} isMobile>미수금 관리</NavItem>
-            <NavItem to="/payroll" onClick={closeMenu} isMobile>급여 관리</NavItem>
-            <NavItem to="/customers" onClick={closeMenu} isMobile>고객 관리</NavItem>
-            <NavItem to="/monthly-report" onClick={closeMenu} isMobile>월별 정산</NavItem>
-            <NavItem to="/settings" onClick={closeMenu} isMobile>기초 설정</NavItem>
+            <NavItem to="/history" onClick={closeMenu} isMobile>정비 이력</NavItem>
+            <NavItem to="/booking" onClick={closeMenu} isMobile>예약 달력</NavItem>
+            <NavItem to="/schedule" onClick={closeMenu} isMobile>스케줄 관리</NavItem>
           </ul>
         </nav>
       </div>
@@ -181,14 +170,12 @@ function AppContent() {
         margin: '0 auto',
       }}>
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/sales" element={<SalesPage />} />
-          <Route path="/expenses" element={<ExpensesPage />} />
-          <Route path="/payroll" element={<PayrollPage />} />
-          <Route path="/receivables" element={<ReceivablesPage />} />
-          <Route path="/customers" element={<CustomersPage />} />
-          <Route path="/monthly-report" element={<MonthlyReportPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/" element={<div>홈 페이지</div>} />
+          <Route path="/history" element={<MaintenanceHistory />} />
+          <Route path="/booking" element={<UserBookingCalendar />} />
+          <Route path="/booking/:date" element={<UserBookingTime />} />
+          <Route path="/schedule" element={<AdminScheduleCalendar />} />
+          <Route path="/schedule/:date" element={<AdminDaySchedule />} />
         </Routes>
       </main>
     </div>
