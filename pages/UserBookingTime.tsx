@@ -125,12 +125,13 @@ const UserBookingTime: React.FC = () => {
             borderRadius: '6px',
             cursor: 'pointer',
             fontWeight: '500',
+            minWidth: '85px',
           }}
         >
-          ← 달력으로 돌아가기
+          ← 이전
         </button>
-        <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '0px' }}>
-          {date} 예약 가능 시간
+        <h1 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '0px' }}>
+          {date} 예약 하기
         </h1>
       </div>
 

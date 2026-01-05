@@ -173,10 +173,10 @@ const AdminScheduleCalendar: React.FC = () => {
               fontWeight: '500',
             }}
           >
-            이전 달
+            &lt;
           </button>
 
-          <div style={{ fontSize: '18px', fontWeight: '600', minWidth: '150px', textAlign: 'center' }}>
+          <div style={{ fontSize: '16px', fontWeight: '600', minWidth: '100px', textAlign: 'center' }}>
             {year}년 {month + 1}월
           </div>
 
@@ -191,7 +191,7 @@ const AdminScheduleCalendar: React.FC = () => {
               fontWeight: '500',
             }}
           >
-            다음 달
+            &gt;
           </button>
         </div>
       </div>

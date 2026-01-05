@@ -122,11 +122,12 @@ const AdminDaySchedule: React.FC = () => {
             borderRadius: '6px',
             cursor: 'pointer',
             fontWeight: '500',
+            minWidth: '85px',
           }}
         >
-          ← 달력으로 돌아가기
+          ← 이전
         </button>
-        <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '0px' }}>
+        <h1 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '0px' }}>
           {date} 예약 현황
         </h1>
       </div>
