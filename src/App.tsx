@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom'
+import { AuthProvider, useAuth } from './contexts/AuthContext'
 import MaintenanceHistory from '../pages/MaintenanceHistory'
 import AdminScheduleCalendar from '../pages/AdminScheduleCalendar'
 import AdminDaySchedule from '../pages/AdminDaySchedule'
+import ShopSearch from '../pages/ShopSearch'
 import UserBookingCalendar from '../pages/UserBookingCalendar'
 import UserBookingTime from '../pages/UserBookingTime'
+import Login from '../pages/Login'
 
 const NavItem: React.FC<{ to: string; children: React.ReactNode; onClick?: () => void; isMobile?: boolean }> = ({ to, children, onClick, isMobile = false }) => {
   const location = useLocation()
@@ -71,6 +74,8 @@ const HamburgerButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
 
 function AppContent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { isAuthenticated, user, logout } = useAuth()
+  const navigate = useNavigate()
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -78,6 +83,17 @@ function AppContent() {
 
   const closeMenu = () => {
     setIsMenuOpen(false)
+  }
+
+  const handleLogout = () => {
+    if (confirm('로그아웃 하시겠습니까?')) {
+      logout()
+      navigate('/login')
+    }
+  }
+
+  const handleLogin = () => {
+    navigate('/login')
   }
 
   return (
@@ -103,7 +119,7 @@ function AppContent() {
             fontWeight: 'bold',
             color: 'var(--primary-color)',
           }}>
-            Bro Motors
+            정비 예약
           </div>
 
           {/* Center: Desktop navigation menu */}
@@ -118,17 +134,83 @@ function AppContent() {
             }}>
               <NavItem to="/">홈</NavItem>
               <NavItem to="/history">정비 이력</NavItem>
-              <NavItem to="/booking">예약 달력</NavItem>
+              <NavItem to="/booking">예약하기</NavItem>
               <NavItem to="/schedule">스케줄 관리</NavItem>
             </ul>
           </nav>
 
-          {/* Right: Hamburger button (mobile only) */}
-          <div className="mobile-only" style={{
+          {/* Right: Login/Logout & Hamburger button */}
+          <div style={{
             position: 'absolute',
             right: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px'
           }}>
-            <HamburgerButton onClick={toggleMenu} />
+            {/* 로그인/로그아웃 버튼 */}
+            {isAuthenticated ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <span className="desktop-only" style={{ fontSize: '14px', color: '#6b7280' }}>
+                  {user?.name}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  style={{
+                    padding: '8px 16px',
+                    backgroundColor: '#fff',
+                    border: '1px solid #d1d5db',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    color: '#374151'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#f9fafb'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = '#fff'
+                  }}
+                >
+                  <span style={{ fontSize: '16px' }}>🚪</span>
+                  <span className="desktop-only">로그아웃</span>
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={handleLogin}
+                style={{
+                  padding: '8px 16px',
+                  backgroundColor: 'var(--primary-color)',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  color: '#fff'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.opacity = '0.9'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.opacity = '1'
+                }}
+              >
+                <span style={{ fontSize: '16px' }}>🔑</span>
+                <span className="desktop-only">로그인</span>
+              </button>
+            )}
+
+            {/* 햄버거 버튼 (모바일 전용) */}
+            <div className="mobile-only">
+              <HamburgerButton onClick={toggleMenu} />
+            </div>
           </div>
         </header>
 
@@ -155,7 +237,7 @@ function AppContent() {
           }}>
             <NavItem to="/" onClick={closeMenu} isMobile>홈</NavItem>
             <NavItem to="/history" onClick={closeMenu} isMobile>정비 이력</NavItem>
-            <NavItem to="/booking" onClick={closeMenu} isMobile>예약 달력</NavItem>
+            <NavItem to="/booking" onClick={closeMenu} isMobile>예약하기</NavItem>
             <NavItem to="/schedule" onClick={closeMenu} isMobile>스케줄 관리</NavItem>
           </ul>
         </nav>
@@ -171,9 +253,11 @@ function AppContent() {
       }}>
         <Routes>
           <Route path="/" element={<div>홈 페이지</div>} />
+          <Route path="/login" element={<Login />} />
           <Route path="/history" element={<MaintenanceHistory />} />
-          <Route path="/booking" element={<UserBookingCalendar />} />
-          <Route path="/booking/:date" element={<UserBookingTime />} />
+          <Route path="/booking" element={<ShopSearch />} />
+          <Route path="/booking/calendar" element={<UserBookingCalendar />} />
+          <Route path="/booking/calendar/:date" element={<UserBookingTime />} />
           <Route path="/schedule" element={<AdminScheduleCalendar />} />
           <Route path="/schedule/:date" element={<AdminDaySchedule />} />
         </Routes>
@@ -185,7 +269,9 @@ function AppContent() {
 function App() {
   return (
     <Router>
-      <AppContent />
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </Router>
   )
 }

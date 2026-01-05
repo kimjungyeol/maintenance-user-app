@@ -1,5 +1,15 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
+
+interface Shop {
+  id: string
+  name: string
+  region: string
+  address: string
+  phone: string
+  rating: number
+  description: string
+}
 
 interface TimeSlot {
   time: string
@@ -36,8 +46,17 @@ const sampleTimeSlots: DayTimeSlots = {
 
 const UserBookingCalendar: React.FC = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+  const selectedShop = (location.state as { selectedShop?: Shop })?.selectedShop
   const [currentDate, setCurrentDate] = useState(new Date())
   const [timeSlots] = useState<DayTimeSlots>(sampleTimeSlots)
+
+  // 업체가 선택되지 않은 경우 업체 선택 페이지로 리다이렉트
+  React.useEffect(() => {
+    if (!selectedShop) {
+      navigate('/booking')
+    }
+  }, [selectedShop, navigate])
 
   const year = currentDate.getFullYear()
   const month = currentDate.getMonth()
@@ -67,7 +86,7 @@ const UserBookingCalendar: React.FC = () => {
     }
 
     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
-    navigate(`/booking/${dateStr}`)
+    navigate(`/booking/calendar/${dateStr}`, { state: { selectedShop } })
   }
 
   const isPastDate = (day: number): boolean => {
@@ -189,11 +208,60 @@ const UserBookingCalendar: React.FC = () => {
     return days
   }
 
+  if (!selectedShop) {
+    return null
+  }
+
   return (
     <div style={{ height: 'calc(100vh - 120px)', display: 'flex', flexDirection: 'column' }}>
+      {/* 선택된 업체 정보 */}
+      <div style={{
+        marginBottom: '24px',
+        padding: '16px',
+        backgroundColor: '#f0f9ff',
+        border: '1px solid #bfdbfe',
+        borderRadius: '12px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}>
+        <div>
+          <div style={{ fontSize: '18px', fontWeight: '600', marginBottom: '4px', color: '#1e40af' }}>
+            {selectedShop.name}
+          </div>
+          <div style={{ fontSize: '14px', color: '#6b7280', marginBottom: '2px' }}>
+            {selectedShop.address}
+          </div>
+          <div style={{ fontSize: '14px', color: '#6b7280' }}>
+            {selectedShop.phone}
+          </div>
+        </div>
+        <button
+          onClick={() => navigate('/booking')}
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#fff',
+            border: '1px solid #d1d5db',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            fontWeight: '500',
+            color: '#374151'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#f9fafb'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = '#fff'
+          }}
+        >
+          업체 변경
+        </button>
+      </div>
+
       {/* 헤더 */}
       <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 style={{ fontSize: '24px', fontWeight: 'bold' }}>예약 달력 (사용자용)</h1>
+        <h1 style={{ fontSize: '24px', fontWeight: 'bold' }}>예약 달력</h1>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <button

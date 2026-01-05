@@ -13,7 +13,7 @@ interface MaintenanceRecord {
 const sampleRecords: MaintenanceRecord[] = [
   {
     id: '1',
-    date: '2024-01-15',
+    date: '2025-01-15',
     vehicleNumber: '12루1234',
     mileage: 45000,
     serviceType: '엔진오일 교체',
@@ -21,17 +21,17 @@ const sampleRecords: MaintenanceRecord[] = [
   },
   {
     id: '2',
-    date: '2024-02-20',
-    vehicleNumber: '45가2456',
-    mileage: 82000,
+    date: '2025-02-20',
+    vehicleNumber: '12루1234',
+    mileage: 45500,
     serviceType: '타이어 교체',
     memo: '전륜 타이어 2개 교체. 다음 점검 90,000km'
   },
   {
     id: '3',
-    date: '2024-03-10',
-    vehicleNumber: '78나9012',
-    mileage: 120000,
+    date: '2025-03-10',
+    vehicleNumber: '12루1234',
+    mileage: 46000,
     serviceType: '정기 점검',
     memo: '에어컨 필터 교체 권장'
   }
