@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useFavorite } from '../src/contexts/FavoriteContext'
 
 interface Shop {
   id: string
@@ -89,11 +90,13 @@ const partnerShops: Shop[] = [
 
 const ShopSearch: React.FC = () => {
   const navigate = useNavigate()
+  const { favoriteShopIds, toggleFavorite, isFavorite } = useFavorite()
   const [searchRegion, setSearchRegion] = useState('')
   const [searchName, setSearchName] = useState('')
   const [filteredShops, setFilteredShops] = useState<Shop[]>(partnerShops)
 
   const regions = ['전체', '서울', '부산', '인천', '대구', '경기']
+  const favoriteShops = partnerShops.filter(shop => isFavorite(shop.id))
 
   const handleSearch = () => {
     let results = partnerShops
@@ -142,8 +145,157 @@ const ShopSearch: React.FC = () => {
     )
   }
 
+  const renderShopCard = (shop: Shop) => (
+    <div
+      key={shop.id}
+      onClick={() => handleShopSelect(shop)}
+      style={{
+        padding: '20px',
+        border: '1px solid #e5e7eb',
+        borderRadius: '12px',
+        backgroundColor: '#fff',
+        cursor: 'pointer',
+        transition: 'all 0.2s'
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = 'var(--primary-color)'
+        e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)'
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = '#e5e7eb'
+        e.currentTarget.style.boxShadow = 'none'
+      }}
+    >
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '12px'
+      }}>
+        <div>
+          <h3 style={{
+            fontSize: '18px',
+            fontWeight: '600',
+            marginBottom: '4px',
+            color: '#111827'
+          }}>
+            {shop.name}
+          </h3>
+          <div style={{ fontSize: '14px', color: '#6b7280' }}>
+            {shop.description}
+          </div>
+        </div>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px'
+        }}>
+          <span style={{
+            padding: '4px 12px',
+            backgroundColor: '#dbeafe',
+            color: '#1e40af',
+            borderRadius: '6px',
+            fontSize: '13px',
+            fontWeight: '500'
+          }}>
+            {shop.region}
+          </span>
+          {/* 즐겨찾기 아이콘 */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              toggleFavorite(shop.id)
+            }}
+            style={{
+              backgroundColor: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '24px',
+              padding: '4px',
+              lineHeight: 1,
+              transition: 'transform 0.2s',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.2)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)'
+            }}
+            title={isFavorite(shop.id) ? '즐겨찾기 해제' : '즐겨찾기 추가'}
+          >
+            {isFavorite(shop.id) ? '❤️' : '🤍'}
+          </button>
+        </div>
+      </div>
+
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+        gap: '12px',
+        marginBottom: '12px'
+      }}>
+        <div style={{ fontSize: '14px', color: '#374151' }}>
+          <span style={{ fontWeight: '500' }}>주소:</span> {shop.address}
+        </div>
+        <div style={{ fontSize: '14px', color: '#374151' }}>
+          <span style={{ fontWeight: '500' }}>전화:</span> {shop.phone}
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        {renderStars(shop.rating)}
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            handleShopSelect(shop)
+          }}
+          style={{
+            padding: '8px 16px',
+            backgroundColor: 'var(--primary-color)',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '6px',
+            fontSize: '14px',
+            fontWeight: '500',
+            cursor: 'pointer'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.opacity = '0.9'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.opacity = '1'
+          }}
+        >
+          예약하기
+        </button>
+      </div>
+    </div>
+  )
+
   return (
     <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+      {/* 즐겨찾기 섹션 */}
+      {favoriteShops.length > 0 && (
+        <div style={{ marginBottom: '32px' }}>
+          <h2 style={{
+            fontSize: '20px',
+            fontWeight: '600',
+            marginBottom: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}>
+            <span>❤️</span>
+            즐겨찾기 ({favoriteShops.length})
+          </h2>
+          <div style={{ display: 'grid', gap: '16px' }}>
+            {favoriteShops.map(shop => renderShopCard(shop))}
+          </div>
+        </div>
+      )}
+      
       <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>
         정비업체 선택
       </h1>
@@ -286,101 +438,7 @@ const ShopSearch: React.FC = () => {
             검색 결과가 없습니다.
           </div>
         ) : (
-          filteredShops.map(shop => (
-            <div
-              key={shop.id}
-              onClick={() => handleShopSelect(shop)}
-              style={{
-                padding: '20px',
-                border: '1px solid #e5e7eb',
-                borderRadius: '12px',
-                backgroundColor: '#fff',
-                cursor: 'pointer',
-                transition: 'all 0.2s'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--primary-color)'
-                e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = '#e5e7eb'
-                e.currentTarget.style.boxShadow = 'none'
-              }}
-            >
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'flex-start',
-                marginBottom: '12px'
-              }}>
-                <div>
-                  <h3 style={{
-                    fontSize: '18px',
-                    fontWeight: '600',
-                    marginBottom: '4px',
-                    color: '#111827'
-                  }}>
-                    {shop.name}
-                  </h3>
-                  <div style={{ fontSize: '14px', color: '#6b7280' }}>
-                    {shop.description}
-                  </div>
-                </div>
-                <span style={{
-                  padding: '4px 12px',
-                  backgroundColor: '#dbeafe',
-                  color: '#1e40af',
-                  borderRadius: '6px',
-                  fontSize: '13px',
-                  fontWeight: '500'
-                }}>
-                  {shop.region}
-                </span>
-              </div>
-
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                gap: '12px',
-                marginBottom: '12px'
-              }}>
-                <div style={{ fontSize: '14px', color: '#374151' }}>
-                  <span style={{ fontWeight: '500' }}>주소:</span> {shop.address}
-                </div>
-                <div style={{ fontSize: '14px', color: '#374151' }}>
-                  <span style={{ fontWeight: '500' }}>전화:</span> {shop.phone}
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                {renderStars(shop.rating)}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleShopSelect(shop)
-                  }}
-                  style={{
-                    padding: '8px 16px',
-                    backgroundColor: 'var(--primary-color)',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '6px',
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    cursor: 'pointer'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.opacity = '0.9'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.opacity = '1'
-                  }}
-                >
-                  예약하기
-                </button>
-              </div>
-            </div>
-          ))
+          filteredShops.map(shop => renderShopCard(shop))
         )}
       </div>
     </div>

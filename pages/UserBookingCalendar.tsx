@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useFavorite } from '../src/contexts/FavoriteContext'
 
 interface Shop {
   id: string
@@ -47,6 +48,7 @@ const sampleTimeSlots: DayTimeSlots = {
 const UserBookingCalendar: React.FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
+  const { toggleFavorite, isFavorite } = useFavorite()
   const selectedShop = (location.state as { selectedShop?: Shop })?.selectedShop
   const [currentDate, setCurrentDate] = useState(new Date())
   const [timeSlots] = useState<DayTimeSlots>(sampleTimeSlots)
@@ -236,27 +238,60 @@ const UserBookingCalendar: React.FC = () => {
             {selectedShop.phone}
           </div>
         </div>
-        <button
-          onClick={() => navigate('/booking')}
-          style={{
-            padding: '8px 16px',
-            backgroundColor: '#fff',
-            border: '1px solid #d1d5db',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: '500',
-            color: '#374151'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = '#f9fafb'
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = '#fff'
-          }}
-        >
-          업체 변경
-        </button>
+
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px'
+        }}>
+          {/* 즐겨찾기 아이콘 */}
+          <button
+            onClick={() => toggleFavorite(selectedShop.id)}
+            style={{
+              backgroundColor: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '24px',
+              padding: '4px',
+              lineHeight: 1,
+              transition: 'transform 0.2s',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.2)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)'
+            }}
+            title={isFavorite(selectedShop.id) ? '즐겨찾기 해제' : '즐겨찾기 추가'}
+          >
+            {isFavorite(selectedShop.id) ? '❤️' : '🤍'}
+          </button>
+
+          <button
+            onClick={() => navigate('/booking')}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#fff',
+              border: '1px solid #d1d5db',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '14px',
+              fontWeight: '500',
+              color: '#374151',
+              whiteSpace: 'nowrap'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#f9fafb'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#fff'
+            }}
+          >
+            업체 변경
+          </button>
+        </div>
       </div>
 
       {/* 헤더 */}
@@ -311,39 +346,41 @@ const UserBookingCalendar: React.FC = () => {
       </div>
 
       {/* 달력 */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-        {/* 요일 헤더 */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(7, 1fr)',
-          gap: '0',
-          marginBottom: '2px'
-        }}>
-          {['일', '월', '화', '수', '목', '금', '토'].map((day, idx) => (
-            <div
-              key={day}
-              style={{
-                padding: '12px',
-                textAlign: 'center',
-                fontWeight: '600',
-                backgroundColor: '#f9fafb',
-                border: '1px solid #e5e7eb',
-                color: idx === 0 ? '#dc2626' : idx === 6 ? '#2563eb' : '#000'
-              }}
-            >
-              {day}
-            </div>
-          ))}
-        </div>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflowX: 'auto' }}>
+        <div style={{ minWidth: '700px' }}>
+          {/* 요일 헤더 */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(7, minmax(100px, 1fr))',
+            gap: '0',
+            marginBottom: '2px'
+          }}>
+            {['일', '월', '화', '수', '목', '금', '토'].map((day, idx) => (
+              <div
+                key={day}
+                style={{
+                  padding: '12px',
+                  textAlign: 'center',
+                  fontWeight: '600',
+                  backgroundColor: '#f9fafb',
+                  border: '1px solid #e5e7eb',
+                  color: idx === 0 ? '#dc2626' : idx === 6 ? '#2563eb' : '#000'
+                }}
+              >
+                {day}
+              </div>
+            ))}
+          </div>
 
-        {/* 날짜 그리드 */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(7, 1fr)',
-          gap: '0',
-          flex: 1,
-        }}>
-          {renderCalendarDays()}
+          {/* 날짜 그리드 */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(7, minmax(100px, 1fr))',
+            gap: '0',
+            flex: 1,
+          }}>
+            {renderCalendarDays()}
+          </div>
         </div>
       </div>
     </div>

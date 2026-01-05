@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
+import { FavoriteProvider } from './contexts/FavoriteContext'
 import MaintenanceHistory from '../pages/MaintenanceHistory'
 import AdminScheduleCalendar from '../pages/AdminScheduleCalendar'
 import AdminDaySchedule from '../pages/AdminDaySchedule'
@@ -270,7 +271,9 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <AppContent />
+        <FavoriteProvider>
+          <AppContent />
+        </FavoriteProvider>
       </AuthProvider>
     </Router>
   )
