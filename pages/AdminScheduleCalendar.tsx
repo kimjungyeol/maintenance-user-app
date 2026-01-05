@@ -159,7 +159,7 @@ const AdminScheduleCalendar: React.FC = () => {
     <div style={{ height: 'calc(100vh - 120px)', display: 'flex', flexDirection: 'column' }}>
       {/* 헤더 */}
       <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 style={{ fontSize: '24px', fontWeight: 'bold' }}>스케줄 관리 (업체용)</h1>
+        <h1 style={{ fontSize: '20px', fontWeight: 'bold', minWidth: '110px', marginBottom: '0px' }}>스케줄 관리</h1>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <button
