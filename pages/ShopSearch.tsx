@@ -90,7 +90,7 @@ const partnerShops: Shop[] = [
 
 const ShopSearch: React.FC = () => {
   const navigate = useNavigate()
-  const { favoriteShopIds, toggleFavorite, isFavorite } = useFavorite()
+  const { toggleFavorite, isFavorite } = useFavorite()
   const [searchRegion, setSearchRegion] = useState('')
   const [searchName, setSearchName] = useState('')
   const [filteredShops, setFilteredShops] = useState<Shop[]>(partnerShops)
@@ -295,7 +295,7 @@ const ShopSearch: React.FC = () => {
           </div>
         </div>
       )}
-      
+
       <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>
         정비업체 선택
       </h1>
