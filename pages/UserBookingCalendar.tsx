@@ -296,7 +296,7 @@ const UserBookingCalendar: React.FC = () => {
 
       {/* 헤더 */}
       <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 style={{ fontSize: '24px', fontWeight: 'bold' }}>예약 달력</h1>
+        <h1 style={{ fontSize: '20px', fontWeight: 'bold', minWidth: '100px', marginBottom: '0px'}}>예약 달력</h1>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <button
@@ -347,11 +347,11 @@ const UserBookingCalendar: React.FC = () => {
 
       {/* 달력 */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflowX: 'auto' }}>
-        <div style={{ minWidth: '700px' }}>
+        <div style={{ minWidth: '490px' }}>
           {/* 요일 헤더 */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(7, minmax(100px, 1fr))',
+            gridTemplateColumns: 'repeat(7, minmax(70px, 1fr))',
             gap: '0',
             marginBottom: '2px'
           }}>
@@ -375,7 +375,7 @@ const UserBookingCalendar: React.FC = () => {
           {/* 날짜 그리드 */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(7, minmax(100px, 1fr))',
+            gridTemplateColumns: 'repeat(7, minmax(70px, 1fr))',
             gap: '0',
             flex: 1,
           }}>
