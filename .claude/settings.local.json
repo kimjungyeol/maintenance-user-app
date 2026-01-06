@@ -4,7 +4,8 @@
       "Bash(dir /b C:Usersusermyprojectmaintenancemaintenance-app)",
       "Bash(npm install)",
       "Bash(npm run build:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(dir:*)"
     ]
   }
 }
